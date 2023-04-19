@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Book} from '../../model/book';
+import {BookService} from '../../services/book.service';
 
 @Component({
   selector: 'ba-book-overview',
@@ -10,24 +11,8 @@ export class BookOverviewComponent {
   books: Book[];
   selectedBook: Book | null = null;
 
-  constructor() {
-    this.books = [
-      {
-        id: 0,
-        author: 'Douglas Crockford',
-        title: 'JavaScript. The Good Parts'
-      },
-      {
-        id: 1,
-        author: 'J.R.R. Tolkien',
-        title: 'Lord of the Rings'
-      },
-      {
-        id: 2,
-        author: 'Tom Hombergs',
-        title: 'Get Your Hands Dirty On Clean Architecture'
-      },
-    ];
+  constructor(bookService: BookService) {
+    this.books = bookService.findAll();
   }
 
   selectBook(book: Book): void {
