@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Book} from '../../model/book';
 import {BookService} from '../../services/book.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'ba-book-overview',
@@ -8,11 +9,12 @@ import {BookService} from '../../services/book.service';
   styleUrls: ['./book-overview.component.scss']
 })
 export class BookOverviewComponent {
-  books: Book[];
+  books$: Observable<Book[]>;
+  books: Book[] = [];
   selectedBook: Book | null = null;
 
   constructor(bookService: BookService) {
-    this.books = bookService.findAll();
+    this.books$ = bookService.observeBooks();
   }
 
   selectBook(book: Book): void {
