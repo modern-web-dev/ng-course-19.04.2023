@@ -4,16 +4,15 @@ import {BookService} from '../../services/book.service';
 import {
   catchError,
   debounceTime,
-  distinct,
   distinctUntilChanged,
-  flatMap,
   fromEvent,
   map,
-  Observable, of,
+  Observable,
+  of,
+  OperatorFunction,
   switchMap,
-  tap, throwError
+  tap
 } from 'rxjs';
-import {query} from '@angular/animations';
 
 @Component({
   selector: 'ba-book-overview',
@@ -59,20 +58,24 @@ export class BookOverviewComponent implements AfterViewInit {
 
     this.results$ = fromEvent(searchInput, 'input')
       .pipe(
-        map(event => {
-          const inputElement = event.target as HTMLInputElement;
-          return inputElement.value;
-        }),
+        fromEventToTargetValue(),
         debounceTime(500),
         distinctUntilChanged(),
         tap(query => console.log('Searching for: ', query)),
         switchMap(query => this.bookService.search(query)),
-        // catchError(error => {
-        //   console.error(error);
-        //   return of([]);
-        //   // return throwError(() => new Error(error));
-        // }),
+        catchError(error => {
+          console.error(error);
+          return of([]);
+          // return throwError(() => new Error(error));
+        }),
         tap(results => console.log(results))
       );
   }
+}
+
+function fromEventToTargetValue(): OperatorFunction<Event, string> {
+  return map(event => {
+    const inputElement = event.target as HTMLInputElement;
+    return inputElement.value;
+  })
 }
