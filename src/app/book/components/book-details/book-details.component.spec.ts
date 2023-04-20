@@ -5,6 +5,8 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 describe('BookDetailsComponent', function () {
   const testBookId = 1;
   const testAuthor = 'Test Author';
+  const updatedAuthor = 'Updated Author';
+  const updatedTitle = 'Updated Title';
   let testBook: Book;
 
   beforeEach(function () {
@@ -14,8 +16,6 @@ describe('BookDetailsComponent', function () {
   describe('(class tests)', function () {
     it('notifies on book changes', function () {
       // 1. given
-      const updatedAuthor = 'Updated Author';
-      const updatedTitle = 'Updated Title';
       const component = new BookDetailsComponent();
       component.book = testBook;
       const formWithUpdatedValues = {
@@ -68,14 +68,61 @@ describe('BookDetailsComponent', function () {
     });
 
     it('notifies on book changes when save button clicked', function () {
-      // given
+      // 1. given
       component.book = testBook;
       fixture.detectChanges();
-      // when
-      // change form inputs' values
-      // click on save button
-      // then
-      // check if new values have been emitted
+      component.bookChange.subscribe(updatedBook => {
+        // 3. then
+        expect(updatedBook.author).toBe(updatedAuthor);
+      });
+      // 2. when
+      const bookForm = bookFormOf(element);
+      bookForm.setAuthorInputValue(updatedAuthor);
+      bookForm.clickSave();
     });
   });
 });
+
+export function bookFormOf(element: HTMLElement) {
+  return {
+    getAuthorInputValue(): string {
+      return getAuthorInput().value;
+    },
+
+    setAuthorInputValue(newValue: string): void {
+      getAuthorInput().value = newValue;
+    },
+
+    getTitleInputValue(): string {
+      return getTitleInput().value;
+    },
+
+    setTitleInputValue(newValue: string): void {
+      getTitleInput().value = newValue;
+    },
+
+    clickSave(): void {
+      const saveButton = element.querySelector<HTMLInputElement>('button');
+      if (!saveButton) {
+        throw new Error('Save button not found');
+      }
+      saveButton.click();
+    }
+  };
+
+  function getAuthorInput(): HTMLInputElement {
+    const authorInput = element.querySelector<HTMLInputElement>('#author');
+    if (!authorInput) {
+      throw new Error('Author input not found')
+    }
+    return authorInput;
+  }
+
+  function getTitleInput(): HTMLInputElement {
+    const titleInput = element.querySelector<HTMLInputElement>('#title');
+    if (!titleInput) {
+      throw new Error('Title input not found')
+    }
+    return titleInput;
+  }
+}
