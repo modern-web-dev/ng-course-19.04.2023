@@ -1,65 +1,35 @@
 import {Book} from '../model/book';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 export class BookService {
-  constructor() {
-    console.log('BookService created');
-  }
+  private booksSubject = new BehaviorSubject<Book[]>([
+    {
+      id: 0,
+      author: 'Douglas Crockford',
+      title: 'JavaScript. The Good Parts'
+    },
+    {
+      id: 1,
+      author: 'J.R.R. Tolkien',
+      title: 'Lord of the Rings'
+    },
+    {
+      id: 2,
+      author: 'Tom Hombergs',
+      title: 'Get Your Hands Dirty On Clean Architecture'
+    },
+  ]);
 
-  search(query: string): Observable<string[]> {
-    return new Observable<string[]>(subscriber => {
-      setTimeout(() => {
-        // subscriber.error('Ups...')
-        subscriber.next([`${query}#1`, `${query}#2`, `${query}#3`]);
-        subscriber.complete();
-      }, 2000);
+  readonly values$ = this.booksSubject.asObservable();
+
+  updateBook(bookToUpdate: Book): Observable<Book> {
+    return new Observable<Book>(subscriber => {
+      const bookCopy = {...bookToUpdate};
+      let currentBooks = this.booksSubject.getValue();
+      currentBooks = currentBooks.map(book => book.id === bookToUpdate.id ? bookCopy : book);
+      this.booksSubject.next(currentBooks);
+      subscriber.next(bookCopy);
+      subscriber.complete();
     });
-  }
-
-  observeBooks(): Observable<Book[]> {
-    return new Observable<Book[]>(subscriber => {
-        // setTimeout(() => {
-          subscriber.next([
-            {
-              id: 0,
-              author: 'Douglas Crockford',
-              title: 'JavaScript. The Good Parts'
-            },
-            {
-              id: 1,
-              author: 'J.R.R. Tolkien',
-              title: 'Lord of the Rings'
-            },
-            {
-              id: 2,
-              author: 'Tom Hombergs',
-              title: 'Get Your Hands Dirty On Clean Architecture'
-            },
-          ]);
-          subscriber.complete();
-        // }, 2000);
-    });
-
-    // return new Promise<Book[]>(resolve => {
-    //   setTimeout(() => {
-    //     resolve([
-    //       {
-    //         id: 0,
-    //         author: 'Douglas Crockford',
-    //         title: 'JavaScript. The Good Parts'
-    //       },
-    //       {
-    //         id: 1,
-    //         author: 'J.R.R. Tolkien',
-    //         title: 'Lord of the Rings'
-    //       },
-    //       {
-    //         id: 2,
-    //         author: 'Tom Hombergs',
-    //         title: 'Get Your Hands Dirty On Clean Architecture'
-    //       },
-    //     ]);
-    //   }, 2000);
-    // });
   }
 }
