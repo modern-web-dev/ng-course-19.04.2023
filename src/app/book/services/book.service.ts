@@ -6,9 +6,19 @@ export class BookService {
     console.log('BookService created');
   }
 
+  search(query: string): Observable<string[]> {
+    return new Observable<string[]>(subscriber => {
+      setTimeout(() => {
+        // subscriber.error('Ups...')
+        subscriber.next([`${query}#1`, `${query}#2`, `${query}#3`]);
+        subscriber.complete();
+      }, 2000);
+    });
+  }
+
   observeBooks(): Observable<Book[]> {
     return new Observable<Book[]>(subscriber => {
-        setTimeout(() => {
+        // setTimeout(() => {
           subscriber.next([
             {
               id: 0,
@@ -27,7 +37,7 @@ export class BookService {
             },
           ]);
           subscriber.complete();
-        }, 2000);
+        // }, 2000);
     });
 
     // return new Promise<Book[]>(resolve => {
