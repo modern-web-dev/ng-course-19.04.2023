@@ -1,20 +1,21 @@
-import {Book} from '../model/book';
+import {Book, BookProperties} from '../model/book';
 import {BehaviorSubject, Observable} from 'rxjs';
 
 export class BookService {
+  private idSeq = 0;
   private booksSubject = new BehaviorSubject<Book[]>([
     {
-      id: 0,
+      id: this.idSeq++,
       author: 'Douglas Crockford',
       title: 'JavaScript. The Good Parts'
     },
     {
-      id: 1,
+      id: this.idSeq++,
       author: 'J.R.R. Tolkien',
       title: 'Lord of the Rings'
     },
     {
-      id: 2,
+      id: this.idSeq++,
       author: 'Tom Hombergs',
       title: 'Get Your Hands Dirty On Clean Architecture'
     },
@@ -30,6 +31,29 @@ export class BookService {
       this.booksSubject.next(currentBooks);
       subscriber.next(bookCopy);
       subscriber.complete();
+    });
+  }
+
+  saveBook(bookProperties: BookProperties): Observable<Book> {
+    return new Observable<Book>(subscriber => {
+      const newBook: Book = {...bookProperties, id: this.idSeq++};
+      subscriber.next(newBook);
+      subscriber.complete();
+      const currentBooks = this.booksSubject.getValue();
+      this.booksSubject.next([...currentBooks, newBook]);
+    });
+  }
+
+  findById(bookId: number): Observable<Book> {
+    return new Observable(subscriber => {
+      const currentBooks = this.booksSubject.getValue();
+      const foundBook = currentBooks.find(book => book.id === bookId);
+      if (foundBook) {
+        subscriber.next({...foundBook});
+        subscriber.complete();
+      } else {
+        subscriber.error(`Book with ID ${bookId} not found`);
+      }
     });
   }
 }

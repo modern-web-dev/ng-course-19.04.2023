@@ -3,6 +3,9 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {BookModule} from './book/book.module';
+import {RouterModule} from '@angular/router';
+import {appRoutes} from './app.routes';
+import {PortalModule} from './portal/portal.module';
 
 @NgModule({
   declarations: [
@@ -10,7 +13,9 @@ import {BookModule} from './book/book.module';
   ],
   imports: [
     BrowserModule,
-    BookModule.forRoot()
+    BookModule.forRoot(),
+    RouterModule.forRoot(appRoutes, {enableTracing: true}),
+    PortalModule
   ],
   bootstrap: [AppComponent]
 })

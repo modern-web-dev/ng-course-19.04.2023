@@ -1,40 +1,32 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component} from '@angular/core';
 import {Book} from '../../model/book';
 import {BookService} from '../../services/book.service';
-import {Observable, Subject, takeUntil} from 'rxjs';
+import {Observable} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'ba-book-overview',
   templateUrl: './book-overview.component.html',
   styleUrls: ['./book-overview.component.scss']
 })
-export class BookOverviewComponent implements OnDestroy {
+export class BookOverviewComponent {
   books$: Observable<Book[]>;
-  selectedBook: Book | null = null;
-  private unsubscribe$ = new Subject<void>()
 
-  constructor(private readonly books: BookService) {
+  constructor(private readonly books: BookService,
+              private readonly router: Router,
+              private readonly currentRoute: ActivatedRoute) {
     this.books$ = books.values$;
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  goToDetailsOf(book: Book): void {
+    this.router.navigate([book.id], {relativeTo: this.currentRoute});
   }
 
-  selectBook(book: Book): void {
-    this.selectedBook = book;
-  }
-
-  isBookSelected(book: Book): boolean {
-    return this.selectedBook === book;
-  }
-
-  updateBook(updatedBook: Book): void {
-    this.books.updateBook(updatedBook)
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe(newBook => this.selectedBook = newBook);
-  }
+  // updateBook(updatedBook: Book): void {
+  //   this.books.updateBook(updatedBook)
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe(newBook => this.selectedBook = newBook);
+  // }
 }
