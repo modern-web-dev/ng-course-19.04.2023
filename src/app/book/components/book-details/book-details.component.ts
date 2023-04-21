@@ -1,10 +1,11 @@
 import {Component, OnDestroy} from '@angular/core';
-import {Book} from '../../model/book';
+import {Book, BookProperties} from '../../model/book';
 import {BookService} from '../../services/book.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Subject, takeUntil} from 'rxjs';
+import {Observable, Subject, takeUntil} from 'rxjs';
 import {FormGroup} from "@angular/forms";
 import {BookFormService} from "./services/book-form.service";
+import {UnsavedDataInterface} from "../../../shared-module/guards/unsaved-data-interface";
 
 
 @Component({
@@ -12,7 +13,7 @@ import {BookFormService} from "./services/book-form.service";
   templateUrl: './book-details.component.html',
   styleUrls: ['./book-details.component.scss']
 })
-export class BookDetailsComponent implements OnDestroy {
+export class BookDetailsComponent implements OnDestroy, UnsavedDataInterface {
 
   bookForm: FormGroup<any> = this.bookFormService.prepareBookForm();
   book: Book | null = null;
@@ -36,20 +37,20 @@ export class BookDetailsComponent implements OnDestroy {
     // currentRoute.params <-- te z routera
   }
 
+  hasUnsavedChanges(): boolean {
+    return this.bookForm.dirty;
+  }
+
   saveAndGoToOverview(event: Event): void {
     // event.preventDefault();
-
-    const changedBook = this.bookForm.value;
-
-    const saveOrUpdate = this.book ?
-      this.books.updateBook({id: this.book?.id!, ...changedBook})
-      : this.books.saveBook(changedBook);
-    saveOrUpdate
+    const changedBook = this.bookForm.value as BookProperties;
+    this.upsert(changedBook)
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe(() => {
-        // this.router.navigate(['..'], {relativeTo: this.currentRoute});
+        this.bookForm.markAsPristine();
+        this.router.navigate(['..'], {relativeTo: this.currentRoute});
       })
   }
 
@@ -69,5 +70,11 @@ export class BookDetailsComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  private upsert(changedBook: BookProperties): Observable<Book> {
+    return this.book ?
+      this.books.updateBook({id: this.book?.id!, ...changedBook})
+      : this.books.saveBook(changedBook);
   }
 }

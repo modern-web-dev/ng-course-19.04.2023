@@ -1,0 +1,4 @@
+  <div *ngIf="control.errors?.['required']">Title is required!</div>
+  <div *ngIf="control.errors?.['minLength']">Min length!</div>
+  <div *ngIf="control.errors?.['pattern']">Invalid Value! The pattern
+    is {{control.errors?.['pattern'].requiredPattern}}</div>

@@ -14,8 +14,7 @@ export class BookFormService {
     return new FormGroup<any>({
       title: new FormControl('test default value', {
         nonNullable: true,
-        validators: [minLengthValidatorFactory(2), Validators.required],
-        updateOn:"blur"
+        validators: [minLengthValidatorFactory(2), Validators.required]
       }),
       author: new FormGroup({
         firstName: new FormControl('', {nonNullable: true, validators: [Validators.required]}),

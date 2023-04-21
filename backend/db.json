@@ -7,16 +7,13 @@
         "firstName": "Tom ",
         "lastName": "Hombergs"
       },
-      "publishDate": "2019",
       "details": {
-        "pages": "156",
-        "language": "English",
-        "cover": "soft"
+        "pages": "156"
       }
     },
     {
       "id": 1,
-      "title": "JavaScript. The Good Parts",
+      "title": "JavaScript. The Good Partsewrwerewr",
       "author": {
         "firstName": "Douglas",
         "lastName": "Crockford"

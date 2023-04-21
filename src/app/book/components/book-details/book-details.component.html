@@ -1,35 +1,43 @@
-<form (submit)="saveAndGoToOverview($event)" [formGroup]="bookForm">
-  <div class="mb-3">
-    <label for="title" class="form-label">Title:</label>
-    <!--    <input id="title" class="form-control" [formControlName]="'title'"[ngClass]="bookForm.invalid? 'is-invalid' : ''"    >-->
-    <!--    <input id="title" class="form-control" [formControlName]="'title'" [ngClass]="{'is-invalid':bookForm.invalid}">-->
-    <!--    <input id="title" class="form-control {{(bookForm.invalid? 'is-invalid' : '')}}" [formControlName]="'title'">-->
-    <input id="title" class="form-control" [formControlName]="'title'" [class.is-invalid]="bookForm.invalid">
-    <div class="invalid-feedback">
-      <div *ngIf="bookForm.get('title')?.errors?.['required']">Title is required!</div>
-      <div *ngIf="bookForm.get('title')?.errors?.['minLength']">Min length!</div>
-      <div *ngIf="bookForm.get('title')?.errors?.['pattern']">Invalid Value! The pattern
-        is {{bookForm.get('title')?.errors?.['pattern'].requiredPattern}}</div>
-    </div>
+<div class="card">
+  <div class="card-header">
+    Book
   </div>
-  <div class="mb-3" formGroupName="author">
-    <label class="form-label">Author:</label>
-    <input id="firstName" class="form-control" formControlName="firstName">
-    <input id="lastName" class="form-control" formControlName="lastName">
-  </div>
-  <div class="mb-3" formGroupName="details">
-    <label class="form-label">Pages:</label>
-    <input id="pages" class="form-control" formControlName="pages">
-  </div>
-  <button class="btn btn-primary" [disabled]="bookForm.invalid">Save</button>
-</form>
-{{bookForm.value|json}}
-<button (click)="resetForm()" class="btn btn-primary">Reset</button>
+  <div class="card-body">
+    <form (submit)="saveAndGoToOverview($event)" [formGroup]="bookForm">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title:</label>
+        <!--    <input id="title" class="form-control" [formControlName]="'title'"[ngClass]="bookForm.invalid? 'is-invalid' : ''"    >-->
+        <!--    <input id="title" class="form-control" [formControlName]="'title'" [ngClass]="{'is-invalid':bookForm.invalid}">-->
+        <!--    <input id="title" class="form-control {{(bookForm.invalid? 'is-invalid' : '')}}" [formControlName]="'title'">-->
+        <input id="title" class="form-control" [formControlName]="'title'">
+        <ba-validation-message [of]="bookForm.get('title')"></ba-validation-message>
+      </div>
+      <div class="mb-3" formGroupName="author">
+        <label class="form-label">Author:</label>
+        <input id="firstName" class="form-control" formControlName="firstName">
+        <ba-validation-message [of]="bookForm.get('firstName')"></ba-validation-message>
+        <input id="lastName" class="form-control" formControlName="lastName">
+        <ba-validation-message [of]="bookForm.get('lastName')"></ba-validation-message>
 
-<button (click)="disableAuthor()" class="btn btn-primary">Disable author</button>
-<button (click)="enableAuthor()" class="btn btn-primary">Enable author</button>
+      </div>
+      <div class="mb-3" formGroupName="details">
+        <label class="form-label">Pages:</label>
+        <input id="pages" class="form-control" formControlName="pages">
+        <ba-validation-message [of]="bookForm.get('pages')"></ba-validation-message>
+      </div>
+      <button class="btn btn-primary" [disabled]="bookForm.invalid">Save</button>
+    </form>
+    {{bookForm.value|json}}
+    <button (click)="resetForm()" class="btn btn-primary">Reset</button>
 
-<ng-container *ngIf="book?.id !== undefined && book?.id !== null">
-  <a [routerLink]="['../', book!.id - 1]"> Prev book</a>
-  <a [routerLink]="['../', book!.id + 1]"> Next book</a>
-</ng-container>
+    <button (click)="disableAuthor()" class="btn btn-primary">Disable author</button>
+    <button (click)="enableAuthor()" class="btn btn-primary">Enable author</button>
+
+    <ng-container *ngIf="book?.id !== undefined && book?.id !== null">
+      <a [routerLink]="['../', book!.id - 1]"> Prev book</a>
+      <a [routerLink]="['../', book!.id + 1]"> Next book</a>
+    </ng-container>
+
+
+  </div>
+</div>
