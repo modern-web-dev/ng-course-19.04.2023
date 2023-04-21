@@ -11,22 +11,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class BookOverviewComponent {
   books$: Observable<Book[]>;
-
   constructor(private readonly books: BookService,
               private readonly router: Router,
               private readonly currentRoute: ActivatedRoute) {
-    this.books$ = books.values$;
+    this.books$ = books.findAll();
   }
 
   goToDetailsOf(book: Book): void {
     this.router.navigate([book.id], {relativeTo: this.currentRoute});
   }
-
-  // updateBook(updatedBook: Book): void {
-  //   this.books.updateBook(updatedBook)
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe(newBook => this.selectedBook = newBook);
-  // }
 }

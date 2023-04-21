@@ -17,7 +17,12 @@ export class BookDetailsComponent implements OnDestroy {
   constructor(private readonly books: BookService,
               private readonly router: Router,
               private readonly currentRoute: ActivatedRoute) {
-    this.book = currentRoute.snapshot.data['book'] ?? null;
+    currentRoute.data.subscribe((data) => {
+      this.book = data['book'] ?? null
+    });
+    // currentRoute.data <-- te z resolvera
+    // currentRoute.queryParams <-- te z adresu url
+    // currentRoute.params <-- te z routera
   }
 
   saveAndGoToOverview(event: Event): void {

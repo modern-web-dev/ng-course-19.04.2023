@@ -4,6 +4,7 @@ import {BookDetailsComponent} from './components/book-details/book-details.compo
 import {BookOverviewComponent} from './components/book-overview/book-overview.component';
 import {BookService} from './services/book.service';
 import {BookDetailsResolver} from './components/book-details/book-details.resolver';
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import {BookDetailsResolver} from './components/book-details/book-details.resolv
     BookOverviewComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   exports: [BookOverviewComponent]
 })

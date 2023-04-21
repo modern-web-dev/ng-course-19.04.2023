@@ -9,3 +9,7 @@
   </div>
   <button type="submit" class="btn btn-primary">Save</button>
 </form>
+<ng-container *ngIf="book?.id !== undefined && book?.id !== null">
+  <a [routerLink]="['../', book!.id - 1]"> Prev book</a>
+  <a [routerLink]="['../', book!.id + 1]"> Next book</a>
+</ng-container>

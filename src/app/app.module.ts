@@ -6,6 +6,7 @@ import {BookModule} from './book/book.module';
 import {RouterModule} from '@angular/router';
 import {appRoutes} from './app.routes';
 import {PortalModule} from './portal/portal.module';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {PortalModule} from './portal/portal.module';
   imports: [
     BrowserModule,
     BookModule.forRoot(),
+    HttpClientModule,
     RouterModule.forRoot(appRoutes, {enableTracing: true}),
     PortalModule
   ],
