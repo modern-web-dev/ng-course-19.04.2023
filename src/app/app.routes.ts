@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 import {bookRoutes} from './book/book.routes';
-import {NotFoundComponent} from "./portal/not-found/not-found.component";
+import {NotFoundComponent} from "./shared-module/not-found/not-found.component";
 
 export const appRoutes: Routes = [
   {

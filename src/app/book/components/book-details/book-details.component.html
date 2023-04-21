@@ -1,14 +1,34 @@
-<form (submit)="saveAndGoToOverview($event)">
-  <div class="mb-3">
-    <label for="author" class="form-label">Author:</label>
-    <input id="author" class="form-control" [value]="book?.author">
-  </div>
+<form (submit)="saveAndGoToOverview($event)" [formGroup]="bookForm">
   <div class="mb-3">
     <label for="title" class="form-label">Title:</label>
-    <input id="title" class="form-control" [value]="book?.title">
+    <!--    <input id="title" class="form-control" [formControlName]="'title'"[ngClass]="bookForm.invalid? 'is-invalid' : ''"    >-->
+    <!--    <input id="title" class="form-control" [formControlName]="'title'" [ngClass]="{'is-invalid':bookForm.invalid}">-->
+    <!--    <input id="title" class="form-control {{(bookForm.invalid? 'is-invalid' : '')}}" [formControlName]="'title'">-->
+    <input id="title" class="form-control" [formControlName]="'title'" [class.is-invalid]="bookForm.invalid">
+    <div class="invalid-feedback">
+      <div *ngIf="bookForm.get('title')?.errors?.['required']">Title is required!</div>
+      <div *ngIf="bookForm.get('title')?.errors?.['minLength']">Min length!</div>
+      <div *ngIf="bookForm.get('title')?.errors?.['pattern']">Invalid Value! The pattern
+        is {{bookForm.get('title')?.errors?.['pattern'].requiredPattern}}</div>
+    </div>
   </div>
-  <button type="submit" class="btn btn-primary">Save</button>
+  <div class="mb-3" formGroupName="author">
+    <label class="form-label">Author:</label>
+    <input id="firstName" class="form-control" formControlName="firstName">
+    <input id="lastName" class="form-control" formControlName="lastName">
+  </div>
+  <div class="mb-3" formGroupName="details">
+    <label class="form-label">Pages:</label>
+    <input id="pages" class="form-control" formControlName="pages">
+  </div>
+  <button class="btn btn-primary" [disabled]="bookForm.invalid">Save</button>
 </form>
+{{bookForm.value|json}}
+<button (click)="resetForm()" class="btn btn-primary">Reset</button>
+
+<button (click)="disableAuthor()" class="btn btn-primary">Disable author</button>
+<button (click)="enableAuthor()" class="btn btn-primary">Enable author</button>
+
 <ng-container *ngIf="book?.id !== undefined && book?.id !== null">
   <a [routerLink]="['../', book!.id - 1]"> Prev book</a>
   <a [routerLink]="['../', book!.id + 1]"> Next book</a>

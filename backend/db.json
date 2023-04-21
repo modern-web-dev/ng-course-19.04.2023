@@ -2,23 +2,42 @@
   "books": [
     {
       "id": 0,
-      "author": "Douglas Crockford",
-      "title": "JavaScript. The Good Parts"
+      "title": "Get Your Hands Dirty On Clean Architecture",
+      "author": {
+        "firstName": "Tom ",
+        "lastName": "Hombergs"
+      },
+      "publishDate": "2019",
+      "details": {
+        "pages": "156",
+        "language": "English",
+        "cover": "soft"
+      }
     },
     {
       "id": 1,
-      "author": "J.R.R. Tolkien",
-      "title": "Lord of the Rings"
+      "title": "JavaScript. The Good Parts",
+      "author": {
+        "firstName": "Douglas",
+        "lastName": "Crockford"
+      },
+      "details": {
+        "pages": "180"
+      }
     },
     {
       "id": 2,
-      "author": "Tom Hombergs",
-      "title": "Get Your Hands Dirty On Clean Architecture"
-    },
-    {
-      "author": "Testowy autor",
-      "title": "Testowa książka",
-      "id": 3
+      "title": "Lord of the Rings",
+      "author": {
+        "firstName": "J.R.R.",
+        "lastName": "Tolkien"
+      },
+      "details": {
+        "pages": 1178,
+        "language": "English",
+        "cover": "soft"
+      },
+      "publishDate": "2018"
     }
   ]
 }

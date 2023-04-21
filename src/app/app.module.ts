@@ -16,9 +16,7 @@ import {ReactiveFormsModule} from "@angular/forms";
   imports: [
     BrowserModule,
     BookModule.forRoot(),
-    HttpClientModule,
-    ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes, {enableTracing: true}),
+    RouterModule.forRoot(appRoutes, {enableTracing: false}),
     PortalModule
   ],
   bootstrap: [AppComponent]
