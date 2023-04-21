@@ -12,7 +12,7 @@ export const bookRoutes: Route = {
     },
     {
       path: 'new',
-      component: BookDetailsComponent
+      component: BookDetailsComponent,
     },
     {
       path: ':bookId',
