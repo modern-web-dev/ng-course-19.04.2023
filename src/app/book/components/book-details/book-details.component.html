@@ -1,8 +1,4 @@
-<div class="card">
-  <div class="card-header">
-    Book
-  </div>
-  <div class="card-body">
+<ba-card title="Book">
     <form (submit)="saveAndGoToOverview($event)" [formGroup]="bookForm">
       <div class="mb-3">
         <label for="title" class="form-label">Title:</label>
@@ -15,10 +11,9 @@
       <div class="mb-3" formGroupName="author">
         <label class="form-label">Author:</label>
         <input id="firstName" class="form-control" formControlName="firstName">
-        <ba-validation-message [of]="bookForm.get('firstName')"></ba-validation-message>
+        <ba-validation-message [of]="bookForm.get('author.firstName')"></ba-validation-message>
         <input id="lastName" class="form-control" formControlName="lastName">
-        <ba-validation-message [of]="bookForm.get('lastName')"></ba-validation-message>
-
+        <ba-validation-message [of]="bookForm.get('author.lastName')"></ba-validation-message>
       </div>
       <div class="mb-3" formGroupName="details">
         <label class="form-label">Pages:</label>
@@ -37,7 +32,4 @@
       <a [routerLink]="['../', book!.id - 1]"> Prev book</a>
       <a [routerLink]="['../', book!.id + 1]"> Next book</a>
     </ng-container>
-
-
-  </div>
-</div>
+</ba-card>

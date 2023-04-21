@@ -4,9 +4,10 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {HttpClientModule} from "@angular/common/http";
 import {ValidationMessageComponent} from './forms/validation-message/validation-message.component';
+import {CardComponent} from './card/card.component';
 
 
-const reexportedComponenets = [ValidationMessageComponent];
+const reexportedComponenets = [ValidationMessageComponent, CardComponent];
 const reexportedModules = [CommonModule,
   ReactiveFormsModule,
   RouterModule,
@@ -14,7 +15,8 @@ const reexportedModules = [CommonModule,
 
 @NgModule({
   declarations: [
-    ...reexportedComponenets
+    ...reexportedComponenets,
+
   ],
   imports: [
     ...reexportedModules

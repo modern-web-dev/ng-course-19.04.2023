@@ -1,35 +1,30 @@
-<div class="card">
-  <div class="card-header">
-    Book
-  </div>
-  <div class="card-body">
-    <input class="form-control-lg" [formControl]="typeaheadFormControl">
-    <button class="btn btn-primary" [disabled]="typeaheadFormControl.pristine" (click)="resetForm()">Reset</button>
+<ba-card title="Book overview">
+  <input class="form-control-lg" [formControl]="typeaheadFormControl">
+  <button class="btn btn-primary" [disabled]="typeaheadFormControl.pristine" (click)="resetForm()">Reset</button>
 
-    <table class="table table-hover">
-      <thead class="table-primary">
-      <tr>
-        <th>#</th>
-        <th>Author</th>
-        <th>Title</th>
+  <table class="table table-hover">
+    <thead class="table-primary">
+    <tr>
+      <th>#</th>
+      <th>Author</th>
+      <th>Title</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngIf="!!(books$ | async)?.length; else noBooks">
+      <tr *ngFor="let book of books$ | async; index as i"
+          (click)="goToDetailsOf(book)">
+        <td>{{i + 1}}</td>
+        <td>{{book.author.firstName}}, {{book.author.lastName}}</td>
+        <td>{{book.title}}</td>
       </tr>
-      </thead>
-      <tbody>
-      <ng-container *ngIf="!!(books$ | async)?.length; else noBooks">
-        <tr *ngFor="let book of books$ | async; index as i"
-            (click)="goToDetailsOf(book)">
-          <td>{{i + 1}}</td>
-          <td>{{book.author.firstName}}, {{book.author.lastName}}</td>
-          <td>{{book.title}}</td>
-        </tr>
-      </ng-container>
-      </tbody>
-    </table>
+    </ng-container>
+    </tbody>
+  </table>
 
-    <ng-template #noBooks>
-      <tr>
-        <td colspan="3">There is no books!</td>
-      </tr>
-    </ng-template>
-  </div>
-</div>
+  <ng-template #noBooks>
+    <tr>
+      <td colspan="3">There is no books!</td>
+    </tr>
+  </ng-template>
+</ba-card>
