@@ -5,6 +5,7 @@ import {BookOverviewComponent} from './components/book-overview/book-overview.co
 import {BookService} from './services/book.service';
 import {BookDetailsResolver} from './components/book-details/book-details.resolver';
 import {RouterModule} from "@angular/router";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import {RouterModule} from "@angular/router";
     BookOverviewComponent
   ],
   imports: [
+    ReactiveFormsModule,
     CommonModule,
     RouterModule
   ],

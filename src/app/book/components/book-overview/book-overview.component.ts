@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Book} from '../../model/book';
 import {BookService} from '../../services/book.service';
 import {
   catchError,
   debounceTime,
   distinctUntilChanged,
-  fromEvent,
+  filter,
   map,
   merge,
   Observable,
@@ -14,15 +14,16 @@ import {
   switchMap
 } from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'ba-book-overview',
   templateUrl: './book-overview.component.html',
   styleUrls: ['./book-overview.component.scss']
 })
-export class BookOverviewComponent implements AfterViewInit {
-  @ViewChild('search')
-  searchInput: ElementRef | undefined;
+export class BookOverviewComponent implements OnInit {
+
+  typeaheadFormControl = new FormControl();
 
   books$?: Observable<Book[]>;
 
@@ -31,16 +32,15 @@ export class BookOverviewComponent implements AfterViewInit {
               private readonly currentRoute: ActivatedRoute) {
   }
 
-  goToDetailsOf(book: Book): void {
-    this.router.navigate([book.id], {relativeTo: this.currentRoute});
+  resetForm() {
+    this.typeaheadFormControl.reset();
   }
 
-  ngAfterViewInit(): void {
-    const searchInput = this.searchInput?.nativeElement as HTMLInputElement;
-
-    const typeaheadBooks$ = fromEvent(searchInput, 'input')
+  ngOnInit(): void {
+    const typeaheadBooks$ = this.typeaheadFormControl.valueChanges
       .pipe(
-        fromEventToTargetValue(),
+        filter((controlValue) => !controlValue || controlValue?.length > 2),
+        map((controlValue) => controlValue || ''),
         debounceTime(500),
         distinctUntilChanged(),
         switchMap(query => this.books.findByTitle(query)),
@@ -52,6 +52,11 @@ export class BookOverviewComponent implements AfterViewInit {
     const booksFromServer$ = this.books.findAll();
     this.books$ = merge(booksFromServer$, typeaheadBooks$);
   }
+
+  goToDetailsOf(book: Book): void {
+    this.router.navigate([book.id], {relativeTo: this.currentRoute});
+  }
+
 }
 
 function fromEventToTargetValue(): OperatorFunction<Event, string> {

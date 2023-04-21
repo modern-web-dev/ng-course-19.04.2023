@@ -7,6 +7,7 @@ import {RouterModule} from '@angular/router';
 import {appRoutes} from './app.routes';
 import {PortalModule} from './portal/portal.module';
 import {HttpClientModule} from "@angular/common/http";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {HttpClientModule} from "@angular/common/http";
     BrowserModule,
     BookModule.forRoot(),
     HttpClientModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes, {enableTracing: true}),
     PortalModule
   ],
